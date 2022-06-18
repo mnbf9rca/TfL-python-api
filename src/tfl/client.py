@@ -95,6 +95,15 @@ class Client:
             return self._deserialize('ApiError', response)
         return self._deserialize('[Mode]', response)
 
+    def get_arrivals_by_stop_point(self, stop_point_id, line_id=None): 
+        if line_id is None:
+            response = self.client.send_request(endpoints['stopPointArrivals'].format(stop_point_id))
+        else:
+            response = self.client.send_request(endpoints['stopPointArrivalByLineId'].format(stop_point_id, line_id))
+        if response.status_code is not 200:
+            return self._deserialize('ApiError', response)
+        return self._deserialize('[Prediction]', response)
+
     def get_arrivals_by_line_id(self, line_id):
         response = self.client.send_request(endpoints['arrivalsByLineId'].format(line_id))
         if response.status_code is not 200:
